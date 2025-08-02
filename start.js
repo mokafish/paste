@@ -8,7 +8,7 @@ const cmd = {
     git_reset: "git reset --hard origin/main",
 }
 
-const CHECK_INTERVAL = 5 * 60 * 1000;
+const CHECK_INTERVAL = 10 * 60 * 1000;
 
 /** @type {ChildProcess} */
 let appProcess = null;
