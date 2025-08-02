@@ -3,7 +3,6 @@ import Koa from 'koa';
 import Router from '@koa/router';
 import Store, { Item } from './store.js';
 import fs from 'node:fs';
-import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const app = new Koa();
