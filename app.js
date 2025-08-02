@@ -30,16 +30,6 @@ router.get('/', async (ctx) => {
     }
 });
 
-router.post('/', async (ctx, next) => {
-    const id = mkid();
-    await store.set(id, new Item(ctx.req, {
-        size: parseInt(ctx.request.header['content-length'] || 0),
-        mtime: new Date().toUTCString()
-    }));
-    ctx.status = 201;
-    ctx.body = ctx.$prefix + id;
-});
-
 router.get('/:id', async (ctx) => {
     const id = ctx.params.id;
 
@@ -84,6 +74,27 @@ router.post('/:id', async (ctx) => {
     ctx.status = 201;
     ctx.body = ctx.$prefix + id;
 });
+
+router.post('/', async (ctx, next) => {
+    const id = mkid();
+    await store.set(id, new Item(ctx.req, {
+        size: parseInt(ctx.request.header['content-length'] || 0),
+        mtime: new Date().toUTCString()
+    }));
+    ctx.status = 201;
+    ctx.body = ctx.$prefix + id;
+});
+
+router.put('/', async (ctx, next) => {
+    const id = mkid();
+    await store.set(id, new Item(ctx.req, {
+        size: parseInt(ctx.request.header['content-length'] || 0),
+        mtime: new Date().toUTCString()
+    }));
+    ctx.status = 200;
+    ctx.body = ctx.$prefix + id;
+});
+
 
 router.delete('/:id', async (ctx) => {
     const id = ctx.params.id;
@@ -137,6 +148,6 @@ function mkid(seed) {
 
 
 app.listen(PORT, () => {
-    console.log(`server start on http://localhost:${PORT}`);
-    console.log(`process ${process.pid}`);
+    console.log(`start pid ${process.pid}`);
+    console.log(`running on http://localhost:${PORT}`);
 });

@@ -345,6 +345,10 @@
             return result.join('');
         }
 
+        function mkid() {
+            return encodeID(Date.now());
+        }
+
 
         document.addEventListener('DOMContentLoaded', () => {
             const pasteContent = document.getElementById('paste-content');
@@ -366,7 +370,7 @@
                 }
 
                 try {
-                    const response = await fetch('/test', {
+                    const response = await fetch('/' + mkid(), {
                         method: 'PUT',
                         body: content,
                     });
