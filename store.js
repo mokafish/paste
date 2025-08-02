@@ -2,7 +2,7 @@
 import path from 'node:path';
 import fs from 'node:fs';
 import stream from 'node:stream';
-import { it } from 'node:test';
+import { fileURLToPath } from 'node:url';
 
 let mainStore = null;
 
@@ -18,6 +18,7 @@ export class Item {
     }
 }
 
+
 export default class Store {
     async init() { }
     async get(id) { return new Item(); }
@@ -30,7 +31,9 @@ export default class Store {
     /** @returns {Promise<Store>} */
     static async main() {
         if (mainStore) return mainStore;
-        mainStore = new FileStore(path.join(process.cwd(), 'paste_data'));
+
+        mainStore = new FileStore(path.join(path.dirname(
+            fileURLToPath(import.meta.url)), 'db'));
         await mainStore.init();
         return mainStore;
     }

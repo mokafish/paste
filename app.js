@@ -26,8 +26,18 @@ router.get('/', async (ctx) => {
         ctx.body = mainPage;
     } else {
         ctx.set('Content-Type', 'text/plain');
-        ctx.body = `curl `;
+        ctx.body = `curl ${ctx.$prefix} --data-binary '@FILE.txt'\n`;
     }
+});
+
+router.post('/', async (ctx, next) => {
+    const id = mkid();
+    await store.set(id, new Item(ctx.req, {
+        size: parseInt(ctx.request.header['content-length'] || 0),
+        mtime: new Date().toUTCString()
+    }));
+    ctx.status = 201;
+    ctx.body = ctx.$prefix + id;
 });
 
 router.get('/:id', async (ctx) => {
@@ -116,6 +126,15 @@ app.use(async (ctx, next) => {
 // 设置路由中间件
 app.use(router.routes());
 app.use(router.allowedMethods());
+
+
+function mkid(seed) {
+    seed = seed || Date.now();
+    const buffer = Buffer.alloc(4);
+    buffer.writeUInt32BE((seed & 0xFFFFFFFF) >>> 0, 0);
+    return buffer.toString('base64url');
+}
+
 
 app.listen(PORT, () => {
     console.log(`server start on http://localhost:${PORT}`);
