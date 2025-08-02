@@ -33,7 +33,7 @@ export default class Store {
         if (mainStore) return mainStore;
 
         mainStore = new FileStore(path.join(path.dirname(
-            fileURLToPath(import.meta.url)), 'db'));
+            fileURLToPath(import.meta.url)), process.env.DB_PATH || 'db'));
         await mainStore.init();
         return mainStore;
     }

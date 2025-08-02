@@ -6,15 +6,12 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const PORT = process.env.PORT || 3000;
 const app = new Koa();
 const router = new Router();
 const store = await Store.main();
 const mainPage = fs.readFileSync(fileURLToPath(
     import.meta.resolve('./index.html', import.meta.url)), 'utf-8');
 const initTime = new Date()
-
-
 
 router.get('/', async (ctx) => {
     ctx.status = 200;
@@ -146,8 +143,9 @@ function mkid(seed) {
     return buffer.toString('base64url');
 }
 
-
+const PORT = process.env.PORT || 3000;
+const HOSTNAME = process.env.HOSTNAME || '127.0.0.1';
 app.listen(PORT, () => {
     console.log(`start pid ${process.pid}`);
-    console.log(`running on http://localhost:${PORT}`);
+    console.log(`running on http://${HOSTNAME}:${PORT}`);
 });
