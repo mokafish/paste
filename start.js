@@ -3,7 +3,7 @@ import "dotenv/config";
 import { execSync, fork, ChildProcess } from "child_process";
 
 const cmd = {
-    git_log: 'git log -1 "--pretty=format:%h %s -- %cr"',
+    git_log: 'git log -1 "--pretty=format:%h %s -- %cd"',
     git_fetch: "git fetch origin",
     git_reset: "git reset --hard origin/main",
 }
@@ -31,7 +31,9 @@ function runCommand(command) {
 function startApp() {
     if (appProcess) {
         mylog('killing ' + appProcess.pid);
-        appProcess.kill('SIGKILL');
+        try {
+            appProcess.kill('SIGKILL');
+        } catch (err) { }
     }
 
     appProcess = fork('./app.js')
@@ -76,7 +78,9 @@ startWatcher();
 // 处理退出信号
 process.on('SIGINT', () => {
     mylog('stop app ...');
-    if (appProcess) appProcess.kill('SIGKILL');
+    try {
+        appProcess.kill('SIGKILL');
+    } catch (err) { }
     mylog('app stopped.');
     process.exit();
 });
