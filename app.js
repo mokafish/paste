@@ -124,11 +124,12 @@ app.use(async (ctx, next) => {
 
 // 设置url前缀中间件
 app.use(async (ctx, next) => {
-    for(let i in  ctx.request.header){
-        console.log('------------------');
+    console.log(ctx.request.method, ctx.request.url);
+    for (let i in ctx.request.header) {
         console.log(i + ':' + ctx.request.header[i]);
-        console.log('------------------');
     }
+    console.log('------------------');
+
     const host = ctx.request.header['x-forwarded-host'] || ctx.request.header.host;
     const protocol = ctx.request.header['x-forwarded-proto'] || ctx.request.protocol;
     ctx.$prefix = `${protocol}://${host}/`;
